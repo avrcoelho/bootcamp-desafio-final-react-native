@@ -1,5 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import AsyncStorage from '@react-native-community/async-storage';
+
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+
+import LoginActions from '~/stores/ducks/login';
 
 import {
   Container,
@@ -9,6 +15,7 @@ import {
   Input,
   Button,
   ButtonText,
+  Loading,
   ButtonRegister,
   ErrorText,
 } from './styles';
@@ -16,11 +23,21 @@ import {
 import ImageBackground from '~/assets/images/fundo.jpg';
 import ImageLogo from '~/assets/images/logo.png';
 
-export default class Login extends Component {
+class Login extends Component {
   static propTypes = {
     navigation: PropTypes.shape({
       navigate: PropTypes.func,
     }).isRequired,
+    loading: PropTypes.bool.isRequired,
+    setLoginRequest: PropTypes.func.isRequired,
+    setClearData: PropTypes.func.isRequired,
+    success: PropTypes.bool.isRequired,
+    data: PropTypes.shape().isRequired,
+    error: PropTypes.oneOfType([PropTypes.oneOf([null]), PropTypes.string]),
+  };
+
+  static defaultProps = {
+    error: null,
   };
 
   state = {
@@ -31,16 +48,42 @@ export default class Login extends Component {
 
   inputs = {};
 
-  focusTheField = id => {
+  async componentDidMount() {
+    const { setClearData } = this.props;
+    await setClearData();
+  }
+
+  async componentDidUpdate(prevProps) {
+    const { success, data } = this.props;
+
+    if (prevProps.success !== success) {
+      await this.setDataUserStorage(data);
+    }
+  }
+
+  setDataUserStorage = async (data) => {
+    try {
+      const { navigation } = this.props;
+
+      await AsyncStorage.setItem('@BootCamp:userdata', JSON.stringify(data));
+
+      navigation.navigate('Dashboard');
+    } catch (e) {
+      console.tron.log('error asyncstorage');
+    }
+  };
+
+  focusTheField = (id) => {
     this.inputs[id].focus();
   };
 
   handleSubmitForm = async () => {
     const { inputEmail, inputPassword } = this.state;
+    const { setLoginRequest } = this.props;
 
     if (inputEmail !== '' && inputPassword !== '') {
       await this.setState({ emptyInput: null });
-      await loginRequest(inputEmail, inputPassword);
+      await setLoginRequest(inputEmail, inputPassword);
     } else {
       this.setState({ emptyInput: 'Preencha todos os campos' });
     }
@@ -48,14 +91,14 @@ export default class Login extends Component {
 
   render() {
     const { inputEmail, inputPassword, emptyInput } = this.state;
-    const { navigation } = this.props;
+    const { navigation, loading, error } = this.props;
 
     return (
       <Container>
         <Background source={ImageBackground} />
         <Form>
           <Logo source={ImageLogo} />
-          {emptyInput && <ErrorText>{emptyInput}</ErrorText>}
+          {(emptyInput || error) && <ErrorText>{emptyInput || error}</ErrorText>}
           <Input
             label="email"
             autoCorrect={false}
@@ -79,13 +122,13 @@ export default class Login extends Component {
             underlineColorAndroid="transparent"
             value={inputPassword}
             onChangeText={text => this.setState({ inputPassword: text })}
-            ref={input => {
+            ref={(input) => {
               this.inputs.password = input;
             }}
             onSubmitEditing={this.handleSubmitForm}
           />
           <Button onPress={this.handleSubmitForm}>
-            <ButtonText>Entrar</ButtonText>
+            {loading ? <Loading color="#fff" size="small" /> : <ButtonText>Entrar</ButtonText>}
           </Button>
           <ButtonRegister onPress={() => navigation.navigate('Signup')}>
             <ButtonText>Criar conta gratuita</ButtonText>
@@ -95,3 +138,17 @@ export default class Login extends Component {
     );
   }
 }
+
+const mapStateToProps = state => ({
+  data: state.login.data,
+  loading: state.login.loading,
+  success: state.login.success,
+  error: state.login.error,
+});
+
+const mapDispatchToProps = dispatch => bindActionCreators(LoginActions, dispatch);
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(Login);

@@ -1,30 +1,31 @@
-import {
-  createAppContainer,
-  createSwitchNavigator,
-  createStackNavigator,
-} from 'react-navigation';
+import { createAppContainer, createSwitchNavigator, createStackNavigator } from 'react-navigation';
 
 import Login from '~/pages/Login';
 import Signup from '~/pages/Signup';
-import Home from '~/pages/Home';
+import Menu from '~/pages/Menu';
 
-const appNavigation = () =>
-  createStackNavigator({
-    Home,
-  });
+const appNavigation = () => createStackNavigator(
+  {
+    Menu,
+  },
+  {
+    defaultNavigationOptions: {
+      header: null,
+    },
+  },
+);
 
-const Routes = (userLogged = false) =>
-  createAppContainer(
-    createSwitchNavigator(
-      {
-        Login,
-        Signup,
-        appNavigation: appNavigation(),
-      },
-      {
-        initialRouteName: userLogged ? 'appNavigation' : 'Login',
-      },
-    ),
-  );
+const Routes = (userLogged = false) => createAppContainer(
+  createSwitchNavigator(
+    {
+      Login,
+      Signup,
+      Dashboard: appNavigation(),
+    },
+    {
+      initialRouteName: userLogged ? 'Dashboard' : 'Login',
+    },
+  ),
+);
 
 export default Routes;

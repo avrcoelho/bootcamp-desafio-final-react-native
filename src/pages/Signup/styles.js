@@ -1,4 +1,5 @@
 import styled from 'styled-components/native';
+import IconFw from 'react-native-vector-icons/FontAwesome';
 
 export const Container = styled.View`
   flex: 1;
@@ -23,6 +24,17 @@ export const Form = styled.View`
   align-items: center;
 `;
 
+export const Text = styled.Text`
+  font-size: 16px;
+  color: #fff;
+  font-family: Helvetica-Bold;
+  margin-bottom: 25px;
+`;
+
+export const Icon = styled(IconFw)`
+  margin-bottom: 10px;
+`;
+
 export const Logo = styled.Image`
   width: 72px;
   height: 72px;
@@ -38,6 +50,7 @@ export const Input = styled.TextInput`
   font-family: Helvetica-Bold;
   font-size: 15px;
   background-color: #fff;
+  font-weight: normal;
 `;
 
 export const Button = styled.TouchableOpacity.attrs({
@@ -60,6 +73,8 @@ export const ButtonText = styled.Text`
   color: #ffffff;
   letter-spacing: 0;
 `;
+
+export const Loading = styled.ActivityIndicator``;
 
 export const ErrorText = styled.Text`
   font-family: Helvetica-Bold;

@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import { Provider } from 'react-redux';
 import AsyncStorage from '@react-native-community/async-storage';
 
-// import store from "~/stores";
+import store from '~/stores';
 import createNavigator from './routes';
 import '~/config/StatusBarConfig';
 
@@ -20,8 +20,6 @@ export default class App extends Component {
       const storage = await AsyncStorage.getItem('@BootCamp:userdata');
 
       await this.setState({ userChecked: true, userLogged: !!storage });
-
-      await this.setState({ userChecked: true, userLogged: !!username });
     } catch (err) {
       console.tron.log(false);
     }
@@ -36,9 +34,9 @@ export default class App extends Component {
     const Routes = createNavigator(userLogged);
 
     return (
-      // <Provider store={store}>
-      <Routes />
-      // </Provider>
+      <Provider store={store}>
+        <Routes />
+      </Provider>
     );
   }
 }

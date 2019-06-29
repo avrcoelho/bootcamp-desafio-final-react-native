@@ -38,6 +38,7 @@ export const Input = styled.TextInput`
   font-family: Helvetica-Bold;
   font-size: 15px;
   background-color: #fff;
+  font-weight: normal;
 `;
 
 export const Button = styled.TouchableOpacity.attrs({
@@ -60,6 +61,8 @@ export const ButtonText = styled.Text`
   color: #ffffff;
   letter-spacing: 0;
 `;
+
+export const Loading = styled.ActivityIndicator``;
 
 export const ErrorText = styled.Text`
   font-family: Helvetica-Bold;
