@@ -27,7 +27,7 @@ export const Title = styled.Text`
   font-size: 18px;
   color: #ffffff;
   letter-spacing: 0;
-  text-align: center;
+  text-align: ${prop => (prop.page === 'Menu' ? 'center' : 'left')};
   flex: 1;
 `;
 
@@ -36,6 +36,7 @@ export const Button = styled.TouchableOpacity.attrs({
 })`
   height: 30px;
   width: 30px;
+  margin-top: 9px;
 `;
 
 export const ButtonCart = styled.TouchableOpacity.attrs({

@@ -42,7 +42,7 @@ export const Input = styled.TextInput`
 `;
 
 export const Button = styled.TouchableOpacity.attrs({
-  opacity: 0.6,
+  activeOpacity: 0.6,
 })`
   height: 54px;
   width: 100%;

@@ -16,6 +16,9 @@ const Header = ({ navigation }) => {
     case 'Menu':
       title = 'Pizzaria Dom Juan';
       break;
+    case 'Orders':
+      title = 'Meus pedidos';
+      break;
     default:
       title = '';
   }
@@ -24,13 +27,21 @@ const Header = ({ navigation }) => {
     <Container>
       <Background source={ImageHeader} />
       <Content>
-        <Button onPress={() => {}}>
-          <Icon name="history" size={20} color="#fff" />
-        </Button>
-        <Title>{title}</Title>
-        <ButtonCart onPress={() => {}}>
-          <Icon name="shopping-cart" size={20} color="#fff" />
-        </ButtonCart>
+        {navigation.state.routeName === 'Menu' ? (
+          <Button onPress={() => navigation.navigate('Orders')}>
+            <Icon name="history" size={20} color="#fff" />
+          </Button>
+        ) : (
+          <Button onPress={() => navigation.goBack()}>
+            <Icon name="chevron-left" size={20} color="#fff" />
+          </Button>
+        )}
+        <Title page={navigation.state.routeName}>{title}</Title>
+        {navigation.state.routeName === 'Menu' && (
+          <ButtonCart onPress={() => {}}>
+            <Icon name="shopping-cart" size={20} color="#fff" />
+          </ButtonCart>
+        )}
       </Content>
     </Container>
   );
@@ -38,6 +49,8 @@ const Header = ({ navigation }) => {
 
 Header.propTypes = {
   navigation: PropTypes.shape({
+    navigate: PropTypes.func,
+    goBack: PropTypes.func,
     state: PropTypes.shape({
       routeName: PropTypes.string,
     }),

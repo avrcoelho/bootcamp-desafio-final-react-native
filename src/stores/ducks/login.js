@@ -24,7 +24,6 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.SET_LOGIN_SUCCESS]: (state, { data }) => state.merge({
     data,
     success: true,
-    loading: false,
   }),
   [Types.SET_LOGIN_FAILURE]: (state, { error }) => state.merge({
     error,

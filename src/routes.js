@@ -3,10 +3,12 @@ import { createAppContainer, createSwitchNavigator, createStackNavigator } from 
 import Login from '~/pages/Login';
 import Signup from '~/pages/Signup';
 import Menu from '~/pages/Menu';
+import Orders from '~/pages/Orders';
 
 const appNavigation = () => createStackNavigator(
   {
     Menu,
+    Orders,
   },
   {
     defaultNavigationOptions: {

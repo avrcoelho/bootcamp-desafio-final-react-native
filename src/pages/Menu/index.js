@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 import PropTypes from 'prop-types';
 
 import { connect } from 'react-redux';
@@ -7,7 +8,19 @@ import { bindActionCreators } from 'redux';
 import ProductsActions from '~/stores/ducks/products';
 
 import {
-  Container, Body, ListProducts, Loading, ErrorText,
+  Container,
+  Body,
+  ListProducts,
+  Loading,
+  ErrorText,
+  Product,
+  ContentProduct,
+  InfoContainer,
+  Image,
+  Name,
+  Description,
+  DeliveryTime,
+  Time,
 } from './styles';
 
 import Header from '~/components/Header';
@@ -53,9 +66,21 @@ class Menu extends Component {
               data={products.docs}
               keyExtractor={product => product.id}
               renderItem={({ item: product }) => (
-                <>
-                  <ErrorText>{product.name}</ErrorText>
-                </>
+                <Product>
+                  <ContentProduct>
+                    <Image source={{ uri: product.url }} />
+                    <InfoContainer>
+                      <Name>{product.name}</Name>
+                      <Description>
+                        Mais de 50 sabores de pizza em até 4 tamanhos diferentes de fome.
+                      </Description>
+                      <DeliveryTime>
+                        <Icon name="alarm" size={15} color="#706e7b" />
+                        <Time>30 min</Time>
+                      </DeliveryTime>
+                    </InfoContainer>
+                  </ContentProduct>
+                </Product>
               )}
             />
           </>
@@ -69,7 +94,7 @@ class Menu extends Component {
     return (
       <Container>
         <Header />
-        <Body>{loading ? <Loading color="#000" size="small" /> : this.renderProducts()}</Body>
+        <Body>{loading ? <Loading color="#fff" size="small" /> : this.renderProducts()}</Body>
       </Container>
     );
   }

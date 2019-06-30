@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import AsyncStorage from '@react-native-community/async-storage';
 
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import LoginActions from '~/stores/ducks/login';
+import StorageActions from '~/stores/ducks/storage';
 
 import {
   Container,
@@ -31,13 +31,16 @@ class Login extends Component {
     loading: PropTypes.bool.isRequired,
     setLoginRequest: PropTypes.func.isRequired,
     setClearData: PropTypes.func.isRequired,
+    setStorageData: PropTypes.func.isRequired,
     success: PropTypes.bool.isRequired,
     data: PropTypes.shape().isRequired,
     error: PropTypes.oneOfType([PropTypes.oneOf([null]), PropTypes.string]),
+    storageError: PropTypes.oneOfType([PropTypes.oneOf([null]), PropTypes.string]),
   };
 
   static defaultProps = {
     error: null,
+    storageError: null,
   };
 
   state = {
@@ -54,24 +57,16 @@ class Login extends Component {
   }
 
   async componentDidUpdate(prevProps) {
-    const { success, data } = this.props;
+    const {
+      success,
+      data,
+      setStorageData,
+    } = this.props;
 
     if (prevProps.success !== success) {
-      await this.setDataUserStorage(data);
+      await setStorageData(data);
     }
   }
-
-  setDataUserStorage = async (data) => {
-    try {
-      const { navigation } = this.props;
-
-      await AsyncStorage.setItem('@BootCamp:userdata', JSON.stringify(data));
-
-      navigation.navigate('Dashboard');
-    } catch (e) {
-      console.tron.log('error asyncstorage');
-    }
-  };
 
   focusTheField = (id) => {
     this.inputs[id].focus();
@@ -91,14 +86,20 @@ class Login extends Component {
 
   render() {
     const { inputEmail, inputPassword, emptyInput } = this.state;
-    const { navigation, loading, error } = this.props;
+    const {
+      navigation,
+      loading,
+      error,
+      storageError,
+    } = this.props;
 
     return (
       <Container>
         <Background source={ImageBackground} />
         <Form>
           <Logo source={ImageLogo} />
-          {(emptyInput || error) && <ErrorText>{emptyInput || error}</ErrorText>}
+          {(emptyInput || error || storageError)
+            && <ErrorText>{emptyInput || error || storageError}</ErrorText>}
           <Input
             label="email"
             autoCorrect={false}
@@ -143,10 +144,18 @@ const mapStateToProps = state => ({
   data: state.login.data,
   loading: state.login.loading,
   success: state.login.success,
+  successStorage: state.storage.success,
   error: state.login.error,
+  storageError: state.storage.error,
 });
 
-const mapDispatchToProps = dispatch => bindActionCreators(LoginActions, dispatch);
+const mapDispatchToProps = dispatch => bindActionCreators(
+  {
+    ...LoginActions,
+    ...StorageActions,
+  },
+  dispatch,
+);
 
 export default connect(
   mapStateToProps,
