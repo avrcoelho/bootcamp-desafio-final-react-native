@@ -7,6 +7,7 @@ const { Types, Creators } = createActions({
   setProductsSuccess: ['data'],
   setProductsFailure: ['error'],
   setProductsRefresh: null,
+  selectTypes: ['product'],
 });
 
 export const ProductsTypes = Types;
@@ -17,6 +18,7 @@ export const INITIAL_STATE = Immutable({
   loading: false,
   error: null,
   refreshing: false,
+  types: null,
 });
 
 export const reducer = createReducer(INITIAL_STATE, {
@@ -33,5 +35,8 @@ export const reducer = createReducer(INITIAL_STATE, {
   }),
   [Types.SET_PRODUCTS_REFRESH]: state => state.merge({
     refreshing: true,
+  }),
+  [Types.SELECT_TYPES]: (state, { product }) => state.merge({
+    types: state.data.docs.find(prod => prod.id === product).types,
   }),
 });

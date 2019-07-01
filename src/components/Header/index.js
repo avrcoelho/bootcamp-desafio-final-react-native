@@ -19,6 +19,9 @@ const Header = ({ navigation }) => {
     case 'Orders':
       title = 'Meus pedidos';
       break;
+    case 'Flavors':
+      title = 'Selecione um tipo';
+      break;
     default:
       title = '';
   }

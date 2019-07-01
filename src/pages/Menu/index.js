@@ -33,6 +33,10 @@ class Menu extends Component {
     error: PropTypes.oneOfType([PropTypes.oneOf([null]), PropTypes.string]),
     refreshing: PropTypes.bool.isRequired,
     loading: PropTypes.bool.isRequired,
+    selectTypes: PropTypes.func.isRequired,
+    navigation: PropTypes.shape({
+      navigate: PropTypes.func,
+    }).isRequired,
   };
 
   static defaultProps = {
@@ -52,6 +56,13 @@ class Menu extends Component {
     await setProductsRefresh();
   };
 
+  handleNextStage = async (product) => {
+    const { selectTypes, navigation } = this.props;
+
+    await selectTypes(product);
+    navigation.navigate('Flavors');
+  };
+
   renderProducts = () => {
     const { products, refreshing, error } = this.props;
 
@@ -66,7 +77,7 @@ class Menu extends Component {
               data={products.docs}
               keyExtractor={product => product.id}
               renderItem={({ item: product }) => (
-                <Product>
+                <Product onPress={() => this.handleNextStage(product.id)}>
                   <ContentProduct>
                     <Image source={{ uri: product.url }} />
                     <InfoContainer>
@@ -105,6 +116,7 @@ const mapStateToProps = state => ({
   loading: state.products.loading,
   refreshing: state.products.refreshing,
   error: state.products.error,
+  types: state.products.types,
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators(ProductsActions, dispatch);
