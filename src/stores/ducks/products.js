@@ -9,6 +9,7 @@ const { Types, Creators } = createActions({
   setProductsRefresh: null,
   setSelectTypes: ['productId'],
   setSelectSizes: ['typeId'],
+  setSelectSize: ['sizeId'],
 });
 
 export const ProductsTypes = Types;
@@ -21,6 +22,14 @@ export const INITIAL_STATE = Immutable({
   refreshing: false,
   types: null,
   sizes: null,
+  productId: null,
+  sizeId: null,
+  typeId: null,
+  nameProd: null,
+  sizeProd: null,
+  priceProd: null,
+  imageProd: null,
+  typeProd: null,
 });
 
 export const reducer = createReducer(INITIAL_STATE, {
@@ -38,10 +47,31 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.SET_PRODUCTS_REFRESH]: state => state.merge({
     refreshing: true,
   }),
-  [Types.SET_SELECT_TYPES]: (state, { productId }) => state.merge({
-    types: state.data.docs.find(prod => prod.id === productId).types,
-  }),
-  [Types.SET_SELECT_SIZES]: (state, { typeId }) => state.merge({
-    sizes: state.types.find(tp => tp.id === typeId).sizes,
-  }),
+  [Types.SET_SELECT_TYPES]: (state, { productId }) => {
+    const product = state.data.docs.find(prod => prod.id === productId);
+
+    return state.merge({
+      nameProd: product.name,
+      types: product.types,
+      productId,
+    });
+  },
+  [Types.SET_SELECT_SIZES]: (state, { typeId }) => {
+    const types = state.types.find(tp => tp.id === typeId);
+
+    return state.merge({
+      sizes: types.sizes,
+      typeProd: types.type,
+      typeId,
+    });
+  },
+  [Types.SET_SELECT_SIZE]: (state, { sizeId }) => {
+    const size = state.sizes.find(sz => sz.id === sizeId);
+
+    return state.merge({
+      priceProd: size.price,
+      sizeProd: size.size,
+      sizeId,
+    });
+  },
 });

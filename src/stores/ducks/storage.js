@@ -28,9 +28,4 @@ export const reducer = createReducer(INITIAL_STATE, {
     error,
     success: false,
   }),
-  [Types.SET_STORAGE_CLEAR]: state => state.merge({
-    dataget: null,
-    error: null,
-    success: false,
-  }),
 });

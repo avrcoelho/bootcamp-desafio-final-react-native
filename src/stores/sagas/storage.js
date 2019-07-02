@@ -26,3 +26,13 @@ export function* getStorage() {
     yield put(StorageActions.storageFailure('Erro ao fazer login'));
   }
 }
+
+export function* clearStorage() {
+  try {
+    yield call(AsyncStorage.clear);
+
+    yield put(StorageActions.storageSuccess(null));
+  } catch (err) {
+    yield put(StorageActions.storageFailure('Erro ao fazer login'));
+  }
+}

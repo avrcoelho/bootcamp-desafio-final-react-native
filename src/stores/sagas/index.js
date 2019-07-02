@@ -10,7 +10,7 @@ import { signup } from './signup';
 import { login } from './login';
 import { products } from './products';
 import { orders } from './orders';
-import { setStorage, getStorage } from './storage';
+import { setStorage, getStorage, clearStorage } from './storage';
 
 export default function* rootSaga() {
   return yield all([
@@ -22,5 +22,6 @@ export default function* rootSaga() {
     takeLatest(OrdersTypes.SET_ORDERS_REFRESH, orders),
     takeLatest(StorageTypes.SET_STORAGE_DATA, setStorage),
     takeLatest(StorageTypes.GET_STORAGE_DATA, getStorage),
+    takeLatest(StorageTypes.SET_STORAGE_CLEAR, clearStorage),
   ]);
 }
