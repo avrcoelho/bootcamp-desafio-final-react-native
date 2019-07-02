@@ -33,7 +33,7 @@ class Menu extends Component {
     error: PropTypes.oneOfType([PropTypes.oneOf([null]), PropTypes.string]),
     refreshing: PropTypes.bool.isRequired,
     loading: PropTypes.bool.isRequired,
-    selectTypes: PropTypes.func.isRequired,
+    setSelectTypes: PropTypes.func.isRequired,
     navigation: PropTypes.shape({
       navigate: PropTypes.func,
     }).isRequired,
@@ -57,9 +57,9 @@ class Menu extends Component {
   };
 
   handleNextStage = async (product) => {
-    const { selectTypes, navigation } = this.props;
+    const { setSelectTypes, navigation } = this.props;
 
-    await selectTypes(product);
+    await setSelectTypes(product);
     navigation.navigate('Flavors');
   };
 

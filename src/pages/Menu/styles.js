@@ -32,9 +32,8 @@ export const Product = styled.TouchableOpacity.attrs({
   activeOpacity: 1,
 })`
   width: 100%;
-  height: 100px;
-  padding: 0 20px;
-  margin-bottom: 15px;
+  height: 125px;
+  padding: 10px;
 `;
 
 export const ContentProduct = styled.View.attrs({
@@ -53,7 +52,7 @@ export const ContentProduct = styled.View.attrs({
   padding: 15px;
   flex-direction: row;
   border-radius: 10px;
-  margin-bottom: 15px;
+  align-items: center;
   background-color: #fff;
 `;
 

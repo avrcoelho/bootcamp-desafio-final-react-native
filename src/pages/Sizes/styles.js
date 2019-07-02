@@ -12,11 +12,11 @@ export const Body = styled.View`
   padding-bottom: ${isIphoneX ? `${getBottomSpace() + 20}px` : '20px'};
 `;
 
-export const ListFlavors = styled.FlatList`
+export const ListSizes = styled.FlatList`
   width: 100%;
 `;
 
-export const Flavor = styled.TouchableOpacity.attrs({
+export const Size = styled.TouchableOpacity.attrs({
   activeOpacity: 1,
 })`
   width: 50%;
@@ -24,7 +24,7 @@ export const Flavor = styled.TouchableOpacity.attrs({
   padding: 10px;
 `;
 
-export const ContentFlavor = styled.View.attrs({
+export const ContentSize = styled.View.attrs({
   shadowColor: '#000',
   shadowOffset: {
     width: 2,

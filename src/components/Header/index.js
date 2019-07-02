@@ -22,6 +22,9 @@ const Header = ({ navigation }) => {
     case 'Flavors':
       title = 'Selecione um tipo';
       break;
+    case 'Sizes':
+      title = 'Selecione um tamanho';
+      break;
     default:
       title = '';
   }

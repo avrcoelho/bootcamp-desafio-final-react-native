@@ -4,6 +4,7 @@ import Login from '~/pages/Login';
 import Signup from '~/pages/Signup';
 import Menu from '~/pages/Menu';
 import Flavors from '~/pages/Flavors';
+import Sizes from '~/pages/Sizes';
 import Orders from '~/pages/Orders';
 
 const appNavigation = () => createStackNavigator(
@@ -11,6 +12,7 @@ const appNavigation = () => createStackNavigator(
     Menu,
     Orders,
     Flavors,
+    Sizes,
   },
   {
     defaultNavigationOptions: {
