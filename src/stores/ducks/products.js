@@ -62,6 +62,7 @@ export const reducer = createReducer(INITIAL_STATE, {
     return state.merge({
       sizes: types.sizes,
       typeProd: types.type,
+      imageProd: types.url,
       typeId,
     });
   },

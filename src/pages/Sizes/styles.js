@@ -16,7 +16,7 @@ export const ListSizes = styled.FlatList`
   width: 100%;
 `;
 
-export const Size = styled.TouchableOpacity.attrs({
+export const SizeItem = styled.TouchableOpacity.attrs({
   activeOpacity: 1,
 })`
   width: 50%;

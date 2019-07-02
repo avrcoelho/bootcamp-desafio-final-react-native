@@ -7,7 +7,7 @@ import { bindActionCreators } from 'redux';
 import ProductsActions from '~/stores/ducks/products';
 
 import {
-  Container, Body, ListSizes, Size, ContentSize, Image, Name,
+  Container, Body, ListSizes, SizeItem, ContentSize, Image, Name,
 } from './styles';
 
 import Header from '~/components/Header';
@@ -22,29 +22,16 @@ class Sizes extends Component {
       }),
     ).isRequired,
     setSelectSize: PropTypes.func.isRequired,
+    navigation: PropTypes.shape({
+      navigate: PropTypes.func,
+    }).isRequired,
   };
 
-  componentDidUpdate() {
-    const {
-      typeId,
-      productId,
-      sizeId,
-      nameProd,
-      typeProd,
-      sizeProd,
-      priceProd,
-      imageProd,
-    } = this.props;
-
-    console.log(typeId, productId, sizeId, nameProd, typeProd, sizeProd, priceProd, imageProd);
-  }
-
   handleNextStage = async (size) => {
-    console.log(1)
     const { navigation, setSelectSize } = this.props;
 
     await setSelectSize(size);
-    // navigation.navigate('Sizes');
+    navigation.navigate('Cart');
   };
 
   render() {
@@ -59,12 +46,12 @@ class Sizes extends Component {
             numColumns={2}
             keyExtractor={size => size.id}
             renderItem={({ item: size }) => (
-              <Size onPress={() => this.handleNextStage(size.id)}>
+              <SizeItem onPress={() => this.handleNextStage(size.id)}>
                 <ContentSize>
                   <Image source={{ uri: size.url }} />
                   <Name>{size.size}</Name>
                 </ContentSize>
-              </Size>
+              </SizeItem>
             )}
           />
         </Body>
@@ -75,6 +62,7 @@ class Sizes extends Component {
 
 const mapStateToProps = state => ({
   sizes: state.products.sizes,
+  ok: state.products,
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators(ProductsActions, dispatch);
