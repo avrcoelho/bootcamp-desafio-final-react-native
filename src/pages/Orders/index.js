@@ -86,6 +86,8 @@ class Orders extends Component {
                     </Time>
                     <CurrencyFormat
                       value={order.total}
+                      thousandSeparator="."
+                      decimalScale={2}
                       displayType="text"
                       decimalSeparator=","
                       fixedDecimalScale
