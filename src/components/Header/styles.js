@@ -31,6 +31,15 @@ export const Title = styled.Text`
   flex: 1;
 `;
 
+export const Total = styled.Text`
+  font-family: Helvetica-Bold;
+  font-size: 18px;
+  color: #ffffff;
+  letter-spacing: 0;
+  text-align: right;
+  flex: 1;
+`;
+
 export const Button = styled.TouchableOpacity.attrs({
   activeOpacity: 0.6,
 })`

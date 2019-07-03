@@ -6,7 +6,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import ImageHeader from '~/assets/images/header-background.png';
 
 import {
-  Container, Background, Content, Button, Title, ButtonCart,
+  Container, Background, Content, Button, Title, ButtonCart, Total,
 } from './styles';
 
 const Header = ({ navigation }) => {
@@ -24,6 +24,9 @@ const Header = ({ navigation }) => {
       break;
     case 'Sizes':
       title = 'Selecione um tamanho';
+      break;
+    case 'Cart':
+      title = 'Carrinho';
       break;
     default:
       title = '';
@@ -44,9 +47,12 @@ const Header = ({ navigation }) => {
         )}
         <Title page={navigation.state.routeName}>{title}</Title>
         {navigation.state.routeName === 'Menu' && (
-          <ButtonCart onPress={() => {}}>
+          <ButtonCart onPress={() => navigation.navigate('Cart')}>
             <Icon name="shopping-cart" size={20} color="#fff" />
           </ButtonCart>
+        )}
+        {navigation.state.routeName === 'Cart' && (
+          <Total>R$ 250,00</Total>
         )}
       </Content>
     </Container>

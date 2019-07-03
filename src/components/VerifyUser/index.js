@@ -20,8 +20,9 @@ class VerifyUser extends Component {
   };
 
   async componentDidMount() {
-    const { getStorageData } = this.props;
+    const { getStorageData, setStorageClear } = this.props;
 
+    // await setStorageClear();
     await getStorageData();
   }
 
