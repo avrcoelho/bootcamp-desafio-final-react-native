@@ -72,18 +72,18 @@ export const Size = styled.Text`
 `;
 
 export const Price = styled.Text`
-  font-family:Helvetica-Bold;
-  font-size:16px;
-  color:#0b2031;
-  letter-spacing:0;
+  font-family: Helvetica-Bold;
+  font-size: 16px;
+  color: #0b2031;
+  letter-spacing: 0;
   margin-top: 8px;
 `;
 
 export const ButtonRemove = styled.TouchableOpacity.attrs({
-  activeOpacity: 0.6
+  activeOpacity: 0.6,
 })`
   padding: 5px;
-`
+`;
 export const ButtonContainer = styled.View`
   width: 100%;
   height: auto;
@@ -91,7 +91,7 @@ export const ButtonContainer = styled.View`
   padding: 0 20px;
   justify-content: space-between;
   flex-direction: row;
-`
+`;
 export const ButtonAddMore = styled.TouchableOpacity.attrs({
   activeOpacity: 0.6,
 })`
@@ -117,12 +117,10 @@ export const ButtonFinish = styled.TouchableOpacity.attrs({
 `;
 
 export const ButtonFinishText = styled.Text`
-  font-family:Helvetica-Bold;
-  font-size:14px;
+  font-family: Helvetica-Bold;
+  font-size: 14px;
   color: #fff;
-  letter-spacing:0;
-  text-align:center;
+  letter-spacing: 0;
+  text-align: center;
   text-transform: uppercase;
 `;
-
-

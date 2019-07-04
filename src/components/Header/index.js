@@ -28,6 +28,9 @@ const Header = ({ navigation }) => {
     case 'Cart':
       title = 'Carrinho';
       break;
+    case 'FinishOrder':
+      title = 'Finalizar pedido';
+      break;
     default:
       title = '';
   }
@@ -47,13 +50,12 @@ const Header = ({ navigation }) => {
         )}
         <Title page={navigation.state.routeName}>{title}</Title>
         {navigation.state.routeName === 'Menu' && (
-          <ButtonCart onPress={() => navigation.navigate('Cart')}>
+          <ButtonCart onPress={() => navigation.navigate('FinishOrder')}>
             <Icon name="shopping-cart" size={20} color="#fff" />
           </ButtonCart>
         )}
-        {navigation.state.routeName === 'Cart' && (
-          <Total>R$ 250,00</Total>
-        )}
+        {(navigation.state.routeName === 'Cart'
+          || navigation.state.routeName === 'FinishOrder') && <Total>R$ 250,00</Total>}
       </Content>
     </Container>
   );

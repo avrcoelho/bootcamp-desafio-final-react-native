@@ -7,6 +7,7 @@ import Flavors from '~/pages/Flavors';
 import Sizes from '~/pages/Sizes';
 import Cart from '~/pages/Cart';
 import Orders from '~/pages/Orders';
+import FinishOrder from '~/pages/FinishOrder';
 
 const appNavigation = () => createStackNavigator(
   {
@@ -15,6 +16,7 @@ const appNavigation = () => createStackNavigator(
     Flavors,
     Sizes,
     Cart,
+    FinishOrder,
   },
   {
     defaultNavigationOptions: {
