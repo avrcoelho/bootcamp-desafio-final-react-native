@@ -7,6 +7,7 @@ export const Container = styled.View`
 `;
 export const Body = styled.View`
   align-items: center;
+  ${props => props.cartEmpty && 'flex: 1;justify-content: center;'}
   margin: -55px 0 0 0;
   padding-bottom: ${isIphoneX ? `${getBottomSpace() + 20}px` : '20px'};
 `;
@@ -88,7 +89,7 @@ export const ButtonContainer = styled.View`
   width: 100%;
   height: auto;
   margin-top: 20px;
-  padding: 0 20px;
+  padding: 0 8px;
   justify-content: space-between;
   flex-direction: row;
 `;
@@ -123,4 +124,12 @@ export const ButtonFinishText = styled.Text`
   letter-spacing: 0;
   text-align: center;
   text-transform: uppercase;
+`;
+
+export const TextEmptyCart = styled.Text`
+  font-family: Helvetica-Bold;
+  font-size: 18px;
+  color: #999;
+  letter-spacing: 0;
+  text-align: center;
 `;

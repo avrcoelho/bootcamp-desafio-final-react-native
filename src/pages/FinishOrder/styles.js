@@ -35,12 +35,13 @@ export const Observation = styled.TextInput.attrs({
   padding: 10px;
   font-family: Helvetica;
   font-size: 15px;
-  color: #999999;
+  color: #666;
   letter-spacing: 0;
   text-align: left;
   margin-bottom: 15px;
   background-color: #fff;
   border-radius: 10px;
+  justify-content: flex-start;
 `;
 export const PostalCode = styled.TextInput.attrs({
   shadowColor: '#000',
@@ -58,13 +59,21 @@ export const PostalCode = styled.TextInput.attrs({
   padding: 10px;
   font-family: Helvetica;
   font-size: 15px;
-  color: #999999;
+  color: #666;
   letter-spacing: 0;
   text-align: left;
   margin-bottom: 15px;
   background-color: #fff;
   border-radius: 10px;
 `;
+
+export const Inline = styled.View`
+  width: 100%;
+  height: auto;
+  flex-direction: row;
+  justify-content: flex-start;
+`;
+
 export const Address = styled.TextInput.attrs({
   shadowColor: '#000',
   shadowOffset: {
@@ -76,17 +85,18 @@ export const Address = styled.TextInput.attrs({
 
   elevation: 5,
 })`
-  width: 100%;
+  flex: 1;
   height: 54px;
   padding: 10px;
   font-family: Helvetica;
   font-size: 15px;
-  color: #999999;
+  color: #666;
   letter-spacing: 0;
   text-align: left;
   margin-bottom: 15px;
   background-color: #fff;
   border-radius: 10px;
+  margin-right: 15px;
 `;
 export const Number = styled.TextInput.attrs({
   shadowColor: '#000',
@@ -99,12 +109,12 @@ export const Number = styled.TextInput.attrs({
 
   elevation: 5,
 })`
-  width: 100%;
+  width: 80px;
   height: 54px;
   padding: 10px;
   font-family: Helvetica;
   font-size: 15px;
-  color: #999999;
+  color: #666;
   letter-spacing: 0;
   text-align: left;
   margin-bottom: 15px;
@@ -127,7 +137,7 @@ export const District = styled.TextInput.attrs({
   padding: 10px;
   font-family: Helvetica;
   font-size: 15px;
-  color: #999999;
+  color: #666;
   letter-spacing: 0;
   text-align: left;
   background-color: #fff;
@@ -138,7 +148,7 @@ export const ButtonContainer = styled.View`
   width: 100%;
   height: auto;
   margin-top: 20px;
-  padding: 0 20px;
+  padding: 0 8px;
   justify-content: flex-end;
   flex-direction: row;
 `;

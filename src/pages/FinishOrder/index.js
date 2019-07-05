@@ -14,6 +14,7 @@ import {
   Form,
   Observation,
   PostalCode,
+  Inline,
   Address,
   Number,
   District,
@@ -53,16 +54,44 @@ class FinishOrder extends Component {
         <Header />
         <Body>
           <Form>
-            <Observation Placehold="CEP" />
-            <PostalCode />
-            <Address />
-            <Number />
-            <District />
+            <Observation
+              placeholder="Alguma observação?"
+              disableFullscreenUI
+              value=""
+              underlineColorAndroid="transparent"
+              multiline
+            />
+            <PostalCode
+              placeholder="Qual o seu CEP?"
+              disableFullscreenUI
+              value=""
+              underlineColorAndroid="transparent"
+            />
+            <Inline>
+              <Address
+                placeholder="Rua"
+                disableFullscreenUI
+                value=""
+                underlineColorAndroid="transparent"
+              />
+              <Number
+                placeholder="Nº"
+                disableFullscreenUI
+                value=""
+                underlineColorAndroid="transparent"
+              />
+            </Inline>
+            <District
+              placeholder="Bairro"
+              disableFullscreenUI
+              value=""
+              underlineColorAndroid="transparent"
+            />
           </Form>
           <ButtonContainer>
             <ButtonFinish onPress={() => navigation.navigate('Menu')}>
               <ButtonFinishText>Finalizar</ButtonFinishText>
-              <Icon name="shopping-cart" size={20} color="#fff" />
+              <Icon name="chevron-right" size={25} color="#fff" />
             </ButtonFinish>
           </ButtonContainer>
         </Body>

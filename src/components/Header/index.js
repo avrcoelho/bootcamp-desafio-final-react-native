@@ -50,7 +50,7 @@ const Header = ({ navigation }) => {
         )}
         <Title page={navigation.state.routeName}>{title}</Title>
         {navigation.state.routeName === 'Menu' && (
-          <ButtonCart onPress={() => navigation.navigate('FinishOrder')}>
+          <ButtonCart onPress={() => navigation.navigate('Cart')}>
             <Icon name="shopping-cart" size={20} color="#fff" />
           </ButtonCart>
         )}
