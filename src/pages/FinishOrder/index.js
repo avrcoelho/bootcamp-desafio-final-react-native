@@ -8,6 +8,7 @@ import { bindActionCreators } from 'redux';
 
 import CartActions from '~/stores/ducks/cart';
 import PostalCodeActions from '~/stores/ducks/postalCode';
+import OrderActions from '~/stores/ducks/orders';
 
 import {
   Container,
@@ -74,7 +75,7 @@ class FinishOrder extends Component {
     }
 
     if (prevProps.success !== success && success) {
-      Alert.alert('Pedidio realizado!', 'My Alert Msg', [
+      Alert.alert('Alerta!', 'Pedido realizado com sucesso!', [
         { text: 'OK', onPress: () => navigation.navigate('Menu') },
       ]);
     }
@@ -115,7 +116,7 @@ class FinishOrder extends Component {
         items: cartData,
       };
 
-      // console.log(orderData);
+
       await setOrdersRequest(orderData);
     }
   };
@@ -124,7 +125,9 @@ class FinishOrder extends Component {
     const { postalCodeRequest } = this.props;
     const { postalCodeInput } = this.state;
 
-    postalCodeRequest(postalCodeInput);
+    if (postalCodeInput !== '') {
+      postalCodeRequest(postalCodeInput);
+    }
   };
 
   render() {
@@ -207,7 +210,7 @@ const mapStateToProps = state => ({
   postalCodeError: state.postalCode.error,
   loading: state.orders.setLoading,
   success: state.orders.setSuccess,
-  cartData: state.cart.data,
+  cartData: state.cart.items,
   totalOrder: calcTotalOrder(state.cart.items),
 });
 
@@ -215,6 +218,7 @@ const mapDispatchToProps = dispatch => bindActionCreators(
   {
     ...CartActions,
     ...PostalCodeActions,
+    ...OrderActions,
   },
   dispatch,
 );
