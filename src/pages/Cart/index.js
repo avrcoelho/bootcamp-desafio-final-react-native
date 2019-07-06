@@ -6,7 +6,7 @@ import CurrencyFormat from 'react-currency-format';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import ProductsActions from '~/stores/ducks/products';
+import CartActions from '~/stores/ducks/cart';
 
 import {
   Container,
@@ -31,44 +31,72 @@ import Header from '~/components/Header';
 
 class Cart extends Component {
   static propTypes = {
-    setProductsRequest: PropTypes.func.isRequired,
-    setProductsRefresh: PropTypes.func.isRequired,
-    products: PropTypes.oneOfType([PropTypes.oneOf([null]), PropTypes.shape()]),
-    error: PropTypes.oneOfType([PropTypes.oneOf([null]), PropTypes.string]),
-    refreshing: PropTypes.bool.isRequired,
-    loading: PropTypes.bool.isRequired,
-    setSelectTypes: PropTypes.func.isRequired,
     navigation: PropTypes.shape({
       navigate: PropTypes.func,
+      getParam: PropTypes.func,
     }).isRequired,
+    item: PropTypes.shape({
+      nameProd: PropTypes.string,
+      productId: PropTypes.string,
+      typeProd: PropTypes.string,
+      typeId: PropTypes.string,
+      imageProd: PropTypes.string,
+      priceProd: PropTypes.number,
+      sizeProd: PropTypes.string,
+      sizeId: PropTypes.string,
+    }).isRequired,
+    addItemCart: PropTypes.func.isRequired,
+    removeItemCart: PropTypes.func.isRequired,
+    cartList: PropTypes.arrayOf(PropTypes.shape({
+      id: PropTypes.number,
+      name: PropTypes.string,
+      type: PropTypes.string,
+      size: PropTypes.string,
+      price: PropTypes.number,
+      url: PropTypes.string,
+    })).isRequired,
   };
 
-  static defaultProps = {
-    cartList: [
-      {
-        id: 1,
-        name: 'Teste',
-        size: 'Grande',
-        price: 10,
-        url: 'http://localhost:3333/images/19b962d6963e109ed79dd57450636660-1.png',
+  async componentDidMount() {
+    const {
+      navigation,
+      addItemCart,
+      item: {
+        nameProd,
+        productId,
+        typeProd,
+        typeId,
+        imageProd,
+        priceProd,
+        sizeProd,
+        sizeId,
       },
-      {
-        id: 2,
-        name: 'Teste',
-        size: 'Grande',
-        price: 10,
-        url: 'http://localhost:3333/images/19b962d6963e109ed79dd57450636660-1.png',
-      },
-    ],
-    error: null,
-  };
+    } = this.props;
 
-  handleNextStage = async (product) => {
-    const { setSelectTypes, navigation } = this.props;
+    const addCart = navigation.getParam('addCart');
 
-    await setSelectTypes(product);
-    navigation.navigate('Flavors');
-  };
+    if (addCart) {
+      const item = {
+        id: Math.random(),
+        name: nameProd,
+        type: typeProd,
+        size: sizeProd,
+        price: priceProd,
+        url: imageProd,
+        productId,
+        typeId,
+        sizeId,
+      };
+
+      await addItemCart(item);
+    }
+  }
+
+  handleRemoveItem = async (id) => {
+    const { removeItemCart } = this.props;
+
+    await removeItemCart(id);
+  }
 
   render() {
     const { cartList, navigation } = this.props;
@@ -87,7 +115,7 @@ class Cart extends Component {
                     <ContentItem>
                       <Image source={{ uri: item.url }} />
                       <InfoContainer>
-                        <Name>{item.name}</Name>
+                        <Name>{`${item.name} ${item.type}`}</Name>
                         <Size>{item.size}</Size>
                         <CurrencyFormat
                           value={item.price}
@@ -100,7 +128,7 @@ class Cart extends Component {
                           renderText={value => <Price>{value}</Price>}
                         />
                       </InfoContainer>
-                      <ButtonRemove onPress={() => {}}>
+                      <ButtonRemove onPress={() => this.handleRemoveItem(item.id)}>
                         <Icon name="delete" color="#e5293e" size={20} />
                       </ButtonRemove>
                     </ContentItem>
@@ -111,7 +139,7 @@ class Cart extends Component {
                 <ButtonAddMore onPress={() => navigation.navigate('Menu')}>
                   <Icon name="shopping-cart" size={20} color="#666" />
                 </ButtonAddMore>
-                <ButtonFinish onPress={() => navigation.navigate('Menu')}>
+                <ButtonFinish onPress={() => navigation.navigate('FinishOrder')}>
                   <ButtonFinishText>Realizar pedidio</ButtonFinishText>
                   <Icon name="shopping-cart" size={20} color="#fff" />
                 </ButtonFinish>
@@ -130,14 +158,11 @@ class Cart extends Component {
 }
 
 const mapStateToProps = state => ({
-  products: state.products.data,
-  loading: state.products.loading,
-  refreshing: state.products.refreshing,
-  error: state.products.error,
-  types: state.products.types,
+  item: state.products,
+  cartList: state.cart.data,
 });
 
-const mapDispatchToProps = dispatch => bindActionCreators(ProductsActions, dispatch);
+const mapDispatchToProps = dispatch => bindActionCreators(CartActions, dispatch);
 
 export default connect(
   mapStateToProps,

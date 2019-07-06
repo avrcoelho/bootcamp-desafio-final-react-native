@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { NavigationActions, StackActions } from 'react-navigation';
 
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -23,7 +24,7 @@ class Sizes extends Component {
     ).isRequired,
     setSelectSize: PropTypes.func.isRequired,
     navigation: PropTypes.shape({
-      navigate: PropTypes.func,
+      dispatch: PropTypes.func,
     }).isRequired,
   };
 
@@ -31,7 +32,18 @@ class Sizes extends Component {
     const { navigation, setSelectSize } = this.props;
 
     await setSelectSize(size);
-    navigation.navigate('Cart');
+
+    const resetAction = StackActions.reset({
+      index: 0,
+      actions: [
+        NavigationActions.navigate({
+          routeName: 'Cart',
+          params: { addCart: true },
+        }),
+      ],
+    });
+
+    navigation.dispatch(resetAction);
   };
 
   render() {

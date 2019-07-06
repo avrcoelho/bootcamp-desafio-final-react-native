@@ -7,7 +7,7 @@ export const Container = styled.View`
 `;
 export const Body = styled.View`
   align-items: center;
-  margin: -55px 0 0 0;
+  margin: -45px 0 0 0;
   padding-bottom: ${isIphoneX ? `${getBottomSpace() + 20}px` : '20px'};
 `;
 
@@ -16,7 +16,6 @@ export const Form = styled.View`
   height: auto;
   flex-direction: column;
   padding: 0 8px;
-  margin-top: 5px;
 `;
 
 export const Observation = styled.TextInput.attrs({

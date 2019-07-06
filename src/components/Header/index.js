@@ -2,6 +2,8 @@ import React from 'react';
 import { withNavigation } from 'react-navigation';
 import PropTypes from 'prop-types';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import CurrencyFormat from 'react-currency-format';
+import { connect } from 'react-redux';
 
 import ImageHeader from '~/assets/images/header-background.png';
 
@@ -9,7 +11,7 @@ import {
   Container, Background, Content, Button, Title, ButtonCart, Total,
 } from './styles';
 
-const Header = ({ navigation }) => {
+const Header = ({ navigation, totalOrder }) => {
   let title;
 
   switch (navigation.state.routeName) {
@@ -44,7 +46,12 @@ const Header = ({ navigation }) => {
             <Icon name="history" size={20} color="#fff" />
           </Button>
         ) : (
-          <Button onPress={() => navigation.goBack()}>
+          <Button
+            onPress={() => (navigation.state.routeName === 'Cart'
+              ? navigation.navigate('Menu')
+              : navigation.goBack())
+            }
+          >
             <Icon name="chevron-left" size={20} color="#fff" />
           </Button>
         )}
@@ -55,7 +62,18 @@ const Header = ({ navigation }) => {
           </ButtonCart>
         )}
         {(navigation.state.routeName === 'Cart'
-          || navigation.state.routeName === 'FinishOrder') && <Total>R$ 250,00</Total>}
+          || navigation.state.routeName === 'FinishOrder') && (
+          <CurrencyFormat
+            value={totalOrder}
+            thousandSeparator="."
+            decimalScale={2}
+            displayType="text"
+            decimalSeparator=","
+            fixedDecimalScale
+            prefix="R$ "
+            renderText={value => <Total>{value}</Total>}
+          />
+        )}
       </Content>
     </Container>
   );
@@ -69,6 +87,13 @@ Header.propTypes = {
       routeName: PropTypes.string,
     }),
   }).isRequired,
+  totalOrder: PropTypes.number.isRequired,
 };
 
-export default withNavigation(Header);
+const calcTotalOrder = items => items.reduce((sum, cur) => sum + cur.price, 0);
+
+const mapStateToProps = state => ({
+  totalOrder: calcTotalOrder(state.cart.data),
+});
+
+export default withNavigation(connect(mapStateToProps)(Header));

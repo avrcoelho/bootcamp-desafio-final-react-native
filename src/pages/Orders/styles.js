@@ -8,7 +8,7 @@ export const Container = styled.View`
 export const Body = styled.View`
   align-items: center;
   flex: 1;
-  margin: -55px 0 0 0;
+  margin: -45px 0 0 0;
   padding-bottom: ${isIphoneX ? `${getBottomSpace() + 20}px` : '20px'};
 `;
 
@@ -33,7 +33,7 @@ export const Order = styled.TouchableOpacity.attrs({
 })`
   width: 100%;
   height: 100px;
-  padding: 0 20px;
+  padding: 0 8px;
   margin-bottom: 15px;
 `;
 

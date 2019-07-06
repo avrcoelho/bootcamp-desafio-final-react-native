@@ -45,9 +45,11 @@ class Menu extends Component {
   };
 
   async componentDidMount() {
-    const { setProductsRequest } = this.props;
+    const { setProductsRequest, products } = this.props;
 
-    await setProductsRequest();
+    if (!products) {
+      await setProductsRequest();
+    }
   }
 
   handleRefreshPage = async () => {
