@@ -12,17 +12,17 @@ export const CartTypes = Types;
 export default Creators;
 
 export const INITIAL_STATE = Immutable({
-  data: [],
+  items: [],
 });
 
 export const reducer = createReducer(INITIAL_STATE, {
   [Types.ADD_ITEM_CART]: (state, { item }) => state.merge({
-    data: [...state.data, item],
+    items: [...state.data, item],
   }),
   [Types.REMOVE_ITEM_CART]: (state, { id }) => state.merge({
-    data: state.data.filter(item => item.id !== id),
+    items: state.data.filter(item => item.id !== id),
   }),
   [Types.CLEAR_CART]: state => state.merge({
-    data: [],
+    items: [],
   }),
 });

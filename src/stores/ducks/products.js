@@ -22,9 +22,9 @@ export const INITIAL_STATE = Immutable({
   refreshing: false,
   types: null,
   sizes: null,
-  productId: null,
-  sizeId: null,
-  typeId: null,
+  product: null,
+  size: null,
+  type: null,
   nameProd: null,
   sizeProd: null,
   priceProd: null,
@@ -53,7 +53,7 @@ export const reducer = createReducer(INITIAL_STATE, {
     return state.merge({
       nameProd: product.name,
       types: product.types,
-      productId,
+      product: productId,
     });
   },
   [Types.SET_SELECT_SIZES]: (state, { typeId }) => {
@@ -63,7 +63,7 @@ export const reducer = createReducer(INITIAL_STATE, {
       sizes: types.sizes,
       typeProd: types.type,
       imageProd: types.url,
-      typeId,
+      type: typeId,
     });
   },
   [Types.SET_SELECT_SIZE]: (state, { sizeId }) => {
@@ -72,7 +72,7 @@ export const reducer = createReducer(INITIAL_STATE, {
     return state.merge({
       priceProd: size.price,
       sizeProd: size.size,
-      sizeId,
+      size: sizeId,
     });
   },
 });

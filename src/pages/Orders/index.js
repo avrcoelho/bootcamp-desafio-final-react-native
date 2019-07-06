@@ -26,8 +26,8 @@ import Header from '~/components/Header';
 
 class Orders extends Component {
   static propTypes = {
-    setOrdersRequest: PropTypes.func.isRequired,
-    setOrdersRefresh: PropTypes.func.isRequired,
+    getOrdersRequest: PropTypes.func.isRequired,
+    getOrdersRefresh: PropTypes.func.isRequired,
     orders: PropTypes.oneOfType([
       PropTypes.oneOf([null]),
       PropTypes.arrayOf(
@@ -49,17 +49,17 @@ class Orders extends Component {
   };
 
   async componentDidMount() {
-    const { setOrdersRequest, orders } = this.props;
+    const { getOrdersRequest, orders } = this.props;
 
     if (!orders) {
-      await setOrdersRequest();
+      await getOrdersRequest();
     }
   }
 
   handleRefreshPage = async () => {
-    const { setOrdersRefresh } = this.props;
+    const { getOrdersRefresh } = this.props;
 
-    await setOrdersRefresh();
+    await getOrdersRefresh();
   };
 
   renderOrders = () => {

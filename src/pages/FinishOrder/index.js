@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
+import { Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import PropTypes from 'prop-types';
-import CurrencyFormat from 'react-currency-format';
 
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import ProductsActions from '~/stores/ducks/products';
+import CartActions from '~/stores/ducks/cart';
+import PostalCodeActions from '~/stores/ducks/postalCode';
 
 import {
   Container,
@@ -21,33 +22,120 @@ import {
   ButtonContainer,
   ButtonFinish,
   ButtonFinishText,
+  Loading,
 } from './styles';
 
 import Header from '~/components/Header';
 
 class FinishOrder extends Component {
   static propTypes = {
-    setProductsRequest: PropTypes.func.isRequired,
-    setProductsRefresh: PropTypes.func.isRequired,
-    products: PropTypes.oneOfType([PropTypes.oneOf([null]), PropTypes.shape()]),
-    error: PropTypes.oneOfType([PropTypes.oneOf([null]), PropTypes.string]),
-    refreshing: PropTypes.bool.isRequired,
-    loading: PropTypes.bool.isRequired,
-    setSelectTypes: PropTypes.func.isRequired,
     navigation: PropTypes.shape({
       navigate: PropTypes.func,
     }).isRequired,
+    postalCodeRequest: PropTypes.func.isRequired,
+    setOrdersRequest: PropTypes.func.isRequired,
+    postalCodeData: PropTypes.shape({
+      logradouro: PropTypes.string,
+      bairro: PropTypes.string,
+    }).isRequired,
+    postalCodeError: PropTypes.oneOfType([PropTypes.oneOf([null]), PropTypes.string]),
+    loading: PropTypes.bool.isRequired,
+    success: PropTypes.bool.isRequired,
+    totalOrder: PropTypes.number.isRequired,
+    cartData: PropTypes.arrayOf(PropTypes.shape()).isRequired,
   };
 
-  handleNextStage = async (product) => {
-    const { setSelectTypes, navigation } = this.props;
+  static defaultProps = {
+    postalCodeError: null,
+  };
 
-    await setSelectTypes(product);
-    navigation.navigate('Flavors');
+  state = {
+    observationInput: '',
+    postalCodeInput: '',
+    addressInput: '',
+    numberInput: '',
+    districtInput: '',
+  };
+
+  componentDidUpdate(prevProps) {
+    const {
+      postalCodeData,
+      postalCodeError,
+      success,
+      navigation,
+    } = this.props;
+
+    if (prevProps.postalCodeData !== postalCodeData) {
+      this.setPostalCodeData(postalCodeData);
+    }
+
+    if (postalCodeError) {
+      Alert.alert(postalCodeError);
+    }
+
+    if (prevProps.success !== success && success) {
+      Alert.alert('Pedidio realizado!', 'My Alert Msg', [
+        { text: 'OK', onPress: () => navigation.navigate('Menu') },
+      ]);
+    }
+  }
+
+  setPostalCodeData = (postalCodeData) => {
+    this.setState({
+      addressInput: postalCodeData.logradouro,
+      districtInput: postalCodeData.bairro,
+    });
+  };
+
+  handleFinishOrder = async () => {
+    const { cartData, totalOrder, setOrdersRequest } = this.props;
+    const {
+      observationInput,
+      postalCodeInput,
+      addressInput,
+      numberInput,
+      districtInput,
+    } = this.state;
+
+    if (
+      postalCodeInput === ''
+      || addressInput === ''
+      || numberInput === ''
+      || districtInput === ''
+    ) {
+      Alert.alert('Preencha todos os campos obrigatórios!');
+    } else {
+      const orderData = {
+        total: totalOrder,
+        observation: observationInput,
+        postalCode: postalCodeInput,
+        address: addressInput,
+        number: numberInput,
+        district: districtInput,
+        items: cartData,
+      };
+
+      // console.log(orderData);
+      await setOrdersRequest(orderData);
+    }
+  };
+
+  handleGetPostalCode = async () => {
+    const { postalCodeRequest } = this.props;
+    const { postalCodeInput } = this.state;
+
+    postalCodeRequest(postalCodeInput);
   };
 
   render() {
-    const { cartList, navigation } = this.props;
+    const { loading } = this.props;
+    const {
+      observationInput,
+      postalCodeInput,
+      addressInput,
+      numberInput,
+      districtInput,
+    } = this.state;
 
     return (
       <Container>
@@ -57,41 +145,53 @@ class FinishOrder extends Component {
             <Observation
               placeholder="Alguma observação?"
               disableFullscreenUI
-              value=""
+              value={observationInput}
+              onChangeText={text => this.setState({ observationInput: text })}
               underlineColorAndroid="transparent"
               multiline
             />
             <PostalCode
-              placeholder="Qual o seu CEP?"
+              placeholder="Qual o seu CEP? *"
               disableFullscreenUI
-              value=""
+              value={postalCodeInput}
+              onChangeText={text => this.setState({ postalCodeInput: text })}
+              onBlur={this.handleGetPostalCode}
               underlineColorAndroid="transparent"
+              keyboardType="numeric"
             />
             <Inline>
               <Address
-                placeholder="Rua"
+                placeholder="Rua *"
                 disableFullscreenUI
-                value=""
+                value={addressInput}
+                onChangeText={text => this.setState({ addressInput: text })}
                 underlineColorAndroid="transparent"
               />
               <Number
-                placeholder="Nº"
+                placeholder="Nº *"
                 disableFullscreenUI
-                value=""
+                value={numberInput}
+                onChangeText={text => this.setState({ numberInput: text })}
                 underlineColorAndroid="transparent"
+                keyboardType="numeric"
               />
             </Inline>
             <District
-              placeholder="Bairro"
+              placeholder="Bairro *"
               disableFullscreenUI
-              value=""
+              value={districtInput}
+              onChangeText={text => this.setState({ districtInput: text })}
               underlineColorAndroid="transparent"
             />
           </Form>
           <ButtonContainer>
-            <ButtonFinish onPress={() => navigation.navigate('Menu')}>
+            <ButtonFinish onPress={this.handleFinishOrder}>
               <ButtonFinishText>Finalizar</ButtonFinishText>
-              <Icon name="chevron-right" size={25} color="#fff" />
+              {loading ? (
+                <Loading color="#fff" size="small" />
+              ) : (
+                <Icon name="chevron-right" size={25} color="#fff" />
+              )}
             </ButtonFinish>
           </ButtonContainer>
         </Body>
@@ -100,15 +200,24 @@ class FinishOrder extends Component {
   }
 }
 
+const calcTotalOrder = items => items.reduce((sum, cur) => sum + cur.price, 0);
+
 const mapStateToProps = state => ({
-  products: state.products.data,
-  loading: state.products.loading,
-  refreshing: state.products.refreshing,
-  error: state.products.error,
-  types: state.products.types,
+  postalCodeData: state.postalCode.data,
+  postalCodeError: state.postalCode.error,
+  loading: state.orders.setLoading,
+  success: state.orders.setSuccess,
+  cartData: state.cart.data,
+  totalOrder: calcTotalOrder(state.cart.items),
 });
 
-const mapDispatchToProps = dispatch => bindActionCreators(ProductsActions, dispatch);
+const mapDispatchToProps = dispatch => bindActionCreators(
+  {
+    ...CartActions,
+    ...PostalCodeActions,
+  },
+  dispatch,
+);
 
 export default connect(
   mapStateToProps,

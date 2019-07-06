@@ -6,6 +6,7 @@ import { reducer as products } from './products';
 import { reducer as storage } from './storage';
 import { reducer as orders } from './orders';
 import { reducer as cart } from './cart';
+import { reducer as postalCode } from './postalCode';
 
 export default combineReducers({
   signup,
@@ -14,4 +15,5 @@ export default combineReducers({
   storage,
   orders,
   cart,
+  postalCode,
 });

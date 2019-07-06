@@ -93,7 +93,7 @@ Header.propTypes = {
 const calcTotalOrder = items => items.reduce((sum, cur) => sum + cur.price, 0);
 
 const mapStateToProps = state => ({
-  totalOrder: calcTotalOrder(state.cart.data),
+  totalOrder: calcTotalOrder(state.cart.items),
 });
 
 export default withNavigation(connect(mapStateToProps)(Header));

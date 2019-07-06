@@ -1,10 +1,16 @@
 import styled from 'styled-components/native';
 import { getBottomSpace, isIphoneX } from 'react-native-iphone-x-helper';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
-export const Container = styled.View`
-  flex: 1;
-  align-items: stretch;
-`;
+export const Container = styled(KeyboardAwareScrollView).attrs({
+  contentContainerStyle: {
+    flexGrow: 1,
+    alignItems: 'stretch',
+  },
+  keyboardShouldPersistTaps: 'handled',
+  enableResetScrollToCoords: false,
+})``;
+
 export const Body = styled.View`
   align-items: center;
   margin: -45px 0 0 0;
@@ -173,3 +179,5 @@ export const ButtonFinishText = styled.Text`
   text-align: center;
   text-transform: uppercase;
 `;
+
+export const Loading = styled.ActivityIndicator``;

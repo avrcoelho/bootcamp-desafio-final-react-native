@@ -37,13 +37,13 @@ class Cart extends Component {
     }).isRequired,
     item: PropTypes.shape({
       nameProd: PropTypes.string,
-      productId: PropTypes.string,
+      product: PropTypes.string,
       typeProd: PropTypes.string,
-      typeId: PropTypes.string,
+      type: PropTypes.string,
       imageProd: PropTypes.string,
       priceProd: PropTypes.number,
       sizeProd: PropTypes.string,
-      sizeId: PropTypes.string,
+      size: PropTypes.string,
     }).isRequired,
     addItemCart: PropTypes.func.isRequired,
     removeItemCart: PropTypes.func.isRequired,
@@ -63,13 +63,13 @@ class Cart extends Component {
       addItemCart,
       item: {
         nameProd,
-        productId,
+        product,
         typeProd,
-        typeId,
+        type,
         imageProd,
         priceProd,
         sizeProd,
-        sizeId,
+        size,
       },
     } = this.props;
 
@@ -78,14 +78,14 @@ class Cart extends Component {
     if (addCart) {
       const item = {
         id: Math.random(),
-        name: nameProd,
-        type: typeProd,
-        size: sizeProd,
+        nameProd,
+        typeProd,
+        sizeProd,
         price: priceProd,
         url: imageProd,
-        productId,
-        typeId,
-        sizeId,
+        product,
+        type,
+        size,
       };
 
       await addItemCart(item);
@@ -115,8 +115,8 @@ class Cart extends Component {
                     <ContentItem>
                       <Image source={{ uri: item.url }} />
                       <InfoContainer>
-                        <Name>{`${item.name} ${item.type}`}</Name>
-                        <Size>{item.size}</Size>
+                        <Name>{`${item.nameProd} ${item.typeProd}`}</Name>
+                        <Size>{item.sizeProd}</Size>
                         <CurrencyFormat
                           value={item.price}
                           thousandSeparator="."
@@ -159,7 +159,7 @@ class Cart extends Component {
 
 const mapStateToProps = state => ({
   item: state.products,
-  cartList: state.cart.data,
+  cartList: state.cart.items,
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators(CartActions, dispatch);
