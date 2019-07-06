@@ -39,10 +39,14 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.GET_ORDERS_REFRESH]: state => state.merge({
     refreshing: true,
   }),
-  [Types.SET_ORDERS_REQUEST]: state => state.merge({ error: null, setLoading: true }),
+  [Types.SET_ORDERS_REQUEST]: state => state.merge({
+    setSuccess: false,
+    error: null,
+    setLoading: true,
+  }),
   [Types.SET_ORDERS_SUCCESS]: state => state.merge({
     setSuccess: true,
-    loading: false,
+    setLoading: false,
   }),
   [Types.SET_ORDERS_FAILURE]: (state, { error }) => state.merge({
     error,
